@@ -41,6 +41,7 @@ function init() {
  * which will be called after everything has run successfully.
  */
  function loadFeed(id, cb) {
+
      var feedUrl = allFeeds[id].url,
          feedName = allFeeds[id].name;
 
@@ -72,7 +73,7 @@ function init() {
                  if (cb) {
                      cb();
                  }
-               },
+        },
        error: function (result, status, err){
                  //run only the callback without attempting to parse result due to error
                  if (cb) {
