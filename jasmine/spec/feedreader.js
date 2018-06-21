@@ -130,6 +130,8 @@ $(function() {
         let entries;
         let firstHtml;
         let secondHtml;
+        let prevFeedData;
+        let currentFeedData;
 
         beforeEach(function(done) {
             loadFeed(0, function() {
