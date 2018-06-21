@@ -75,7 +75,7 @@ $(function() {
          */
 
         it('mennu is hidden by default', function() {
-            expect(neededClass).toBe('menu-hidden');
+            expect($('body').hasClass('menu-hidden')).toBe(true);
         });
 
         /* TODO: Write a test that ensures the menu changes
@@ -84,10 +84,12 @@ $(function() {
          * clicked and does it hide when clicked again.
          */
         it('menu changes visibility when clicked', function() {
-            if (neededClass === "menu-hidden") {
+            if (($('body').hasClass('menu-hidden')) === true && $('body')[0].classList.length === 1) {
                 expect(neededClass.onclick).toBeUndefined();
-            } else {
+            } else if(($('body').hasClass('menu-hidden')) === false && $('body')[0].classList.length === 0){
                 expect(neededClass.onclick).toBe("menu-hidden");
+            } else {
+              console.error('number of the body classes has changed, please adjust the test');
             };
 
         });
@@ -113,10 +115,7 @@ $(function() {
          */
 
         it('after loadFeed is called and completed there should be at least 1 entry', function(done) {
-            requiredDiv = document.getElementsByClassName('feed');
-            requiredDivNew = requiredDiv.item(0);
-            entries = requiredDivNew.querySelectorAll('a.entry-link > article.entry');
-            expect(entries.length).not.toBeLessThan(1);
+            expect(($('.feed > .entry-link > .feed'))).not.toBeLessThan(1);
             done();
         });
 
@@ -134,8 +133,10 @@ $(function() {
 
         beforeEach(function(done) {
             loadFeed(0, function() {
+            let prevFeedData = $('body').innerHTML;
                 done();
                 loadFeed(1, function(done) {
+                  let currentFeedData = $('body').innerHTML;
                     done();
                 });
             });
@@ -149,12 +150,10 @@ $(function() {
 
 
         it('should check if content changes when new feed is loaded', function(done) {
-            requiredDiv = document.getElementsByClassName('feed');
-            requiredDivNew = requiredDiv.item(0);
-            entries = requiredDivNew.querySelectorAll('a.entry-link > article.entry');
-            firstHtml = requiredDivNew.querySelectorAll('a.entry-link > article.entry');
+
+            firstHtml = prevFeedData;
             done();
-            secondHtml = requiredDivNew.querySelectorAll('a.entry-link > article.entry');
+            secondHtml = currentFeedData;
             done();
             expect(firstHtml).not.toBe(secondHtml);
             if (allFeeds < 0) {
