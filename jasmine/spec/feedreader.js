@@ -43,7 +43,7 @@ $(function() {
         it('names are defined in the feeds', function() {
             allFeeds.forEach(function(el) {
                 expect(el.name).toBeDefined();
-                expect(el.url.name).not.toBe(0);
+                expect(el.name.length).not.toBe(0);
             });
         });
 
