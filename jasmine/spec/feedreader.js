@@ -43,7 +43,7 @@ $(function() {
         it('names are defined in the feeds', function() {
             allFeeds.forEach(function(el) {
                 expect(el.name).toBeDefined();
-                expect(el.url.name).not.toBe(0);
+                expect(el.name.length).not.toBe(0);
             });
         });
 
@@ -51,17 +51,6 @@ $(function() {
 
 
     describe('The menu', function() {
-
-        let body;
-        let bodyNew;
-        let neededClass;
-
-        beforeEach(function() {
-            body = document.getElementsByTagName('body');
-            bodyNew = body.item(0);
-            neededClass = bodyNew.className;
-        });
-
 
         // test that ensures the menu element is
         // hidden by default
@@ -74,16 +63,14 @@ $(function() {
         // visibility when the menu icon is clicked
 
         it('menu changes visibility when clicked', function() {
-            if (($('body').hasClass('menu-hidden')) === true && $('body')[0].classList.length === 1) {
-                expect(neededClass.onclick).toBeUndefined();
-            } else if (($('body').hasClass('menu-hidden')) === false && $('body')[0].classList.length === 0) {
-                expect(neededClass.onclick).toBe("menu-hidden");
-            } else {
-                console.error('number of the body classes has changed, please adjust the test');
-            };
-
+            $('.menu-icon-link').click();
+            expect($('body').hasClass('menu-hidden')).toBe(false);
+            $('.menu-icon-link').click();
+            expect($('body').hasClass('menu-hidden')).toBe(true);
         });
+
     });
+
 
     // test that ensures when the loadFeed
     // function is called and completes its work, there is at least
@@ -91,16 +78,12 @@ $(function() {
 
     describe('Initial Entries', function() {
 
-        let requiredDiv;
-        let requiredDivNew;
-        let entries;
-
         beforeEach(function(done) {
-            loadFeed(0, done());
+            loadFeed(0, done);
         });
 
         it('after loadFeed is called and completed there should be at least 1 entry', function(done) {
-            expect(($('.feed > .entry-link > .feed'))).not.toBeLessThan(1);
+            expect($('.feed .entry-link .entry').length).not.toBeLessThan(1);
             done();
         });
 
@@ -111,35 +94,23 @@ $(function() {
 
     describe('New Feed Selection', function() {
 
-        let requiredDiv;
-        let requiredDivNew;
-        let entries;
+
         let prevFeedData;
         let currentFeedData;
 
 
         beforeEach(function(done) {
-            loadFeed(0, function() {
-                prevFeedData = $('body').html();
-                done();
-            });
-            loadFeed(1, function() {
+            loadFeed(0, loadFeed(1, function() {
                 currentFeedData = $('body').html();
                 done();
-            });
+            }));
+            prevFeedData = $('body').html();
+
         });
 
-
-
-        it('should check if content changes when new feed is loaded', function(done) {
-
+        it('should check if content changes when new feed is loaded', function() {
 
             expect(currentFeedData).not.toBe(prevFeedData);
-            done();
-
-            if (allFeeds < 0) {
-                console.error('there is no feed to load');
-            };
 
         });
 
