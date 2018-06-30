@@ -96,14 +96,23 @@ $(function() {
         let currentFeedData;
 
 
+        // beforeEach(function(done) {
+        //     loadFeed(0, loadFeed(1, function() {
+        //         currentFeedData =
+        //         done();
+        //     }));
+        //     prevFeedData = $('body').html();
+        //
+        // });
         beforeEach(function(done) {
-            loadFeed(0, loadFeed(1, function() {
-                currentFeedData = $('body').html();
-                done();
-            }));
-            prevFeedData = $('body').html();
-
-        });
+  loadFeed(0, function() {
+    prevFeedData = $('body').html();
+    loadFeed(1, function(){
+      newFeedData= $('body').html();
+      done();
+    });
+  });
+});
 
         it('should check if content changes when new feed is loaded', function() {
 
