@@ -3,7 +3,6 @@
  * This is the spec file that Jasmine will read and contains
  * all of the tests that will be run against your application.
  */
-
 $(function() {
     /* This is our first test suite - a test suite just contains
      * a related set of tests. This suite is all about the RSS
@@ -95,28 +94,21 @@ $(function() {
         let prevFeedData;
         let currentFeedData;
 
-
-        // beforeEach(function(done) {
-        //     loadFeed(0, loadFeed(1, function() {
-        //         currentFeedData =
-        //         done();
-        //     }));
-        //     prevFeedData = $('body').html();
-        //
-        // });
         beforeEach(function(done) {
-  loadFeed(0, function() {
-    prevFeedData = $('body').html();
-    loadFeed(1, function(){
-      newFeedData= $('body').html();
-      done();
-    });
-  });
-});
+            loadFeed(0, function() {
+                prevFeedData = $('body').html();
+                loadFeed(1, function() {
+                    newFeedData = $('body').html();
+                    done();
+                });
+            });
+        });
 
         it('should check if content changes when new feed is loaded', function() {
 
-            expect(currentFeedData).not.toBe(prevFeedData);
+            expect(prevFeedData).not.toBe(newFeedData);
+
+
 
         });
 
